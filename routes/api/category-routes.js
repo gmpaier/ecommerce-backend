@@ -62,11 +62,14 @@ router.put('/:id', (req, res) => {
       },
       {
         where: {
-          book_id: req.params.book_id,
+          id: req.params.id,
         },
       }
     );
-  
+    if(!categoryData) {
+      res.status(404).json({message: 'No category with this id!'});
+      return;
+     }
     return res.json(categoryData);
   }
   catch (err) {
@@ -76,13 +79,22 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  const categoryData = await Category.destroy({
-    where: {
-      id: req.params.id,
-    },
-  });
-
-  return res.json(categoryData);
+  try {
+    const categoryData = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if(!categoryData) {
+      res.status(404).json({message: 'No category with this id!'});
+      return;
+    }
+    return res.json(categoryData);
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
