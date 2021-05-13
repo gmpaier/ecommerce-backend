@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const tagData = await Tag.findAll({
       include: [
         {
-          model: Product,
+          model: Product, as: "tagged_products",
           attributes: ['product_name', 'price', 'stock']
         },
       ],
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
     const tagData = await Tag.findByPk(req.params.id, {
       include: [
         {
-          model: Product,
+          model: Product, as: "tagged_products",
           attributes: ['product_name', 'price', 'stock']
         },
       ],
